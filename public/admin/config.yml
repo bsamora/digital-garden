@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: bsamora/digital-garden
+  branch: main
+  auth_type: pkce
+  app_id: "Ov23liJHPFM5AuBOrthR"
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "src/content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Created", value: "created" }
+          - { label: "Watched", value: "watched" }
+          - { label: "Read", value: "read" }
+          - { label: "Learned", value: "learned" }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
