@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import PostCard from "../../components/PostCard.astro";
+import CategoryIcon from "../../components/CategoryIcon.astro";
+
+export async function getStaticPaths() {
+  const categories = ["created", "watched", "read", "learned"] as const;
+  return categories.map((category) => ({
+    params: { category },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+
+const posts = (await getCollection("posts"))
+  .filter((post) => post.data.category === category)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Base title={category.charAt(0).toUpperCase() + category.slice(1)}>
+  <div class="page-header">
+    <h1>
+      <CategoryIcon category={category} />
+    </h1>
+  </div>
+
+  <div class="category-nav">
+    <a href="/">All</a>
+    <a href="/category/created" class={category === "created" ? "active" : ""}>Created</a>
+    <a href="/category/watched" class={category === "watched" ? "active" : ""}>Watched</a>
+    <a href="/category/read" class={category === "read" ? "active" : ""}>Read</a>
+    <a href="/category/learned" class={category === "learned" ? "active" : ""}>Learned</a>
+  </div>
+
+  {posts.map((post) => (
+    <PostCard
+      title={post.data.title}
+      slug={post.slug}
+      date={post.data.date}
+      category={post.data.category}
+      tags={post.data.tags}
+      description={post.data.description}
+    />
+  ))}
+
+  {posts.length === 0 && (
+    <p style="color: var(--text-muted); padding: var(--space-xl) 0; text-align: center;">
+      No posts in this category yet.
+    </p>
+  )}
+</Base>

@@ -1,0 +1,35 @@
+---
+import Nav from "../components/Nav.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "Digital Garden", description = "Daily notes on things I create, watch, read, and learn." } = Astro.props;
+const pageTitle = title === "Digital Garden" ? title : `${title} — Digital Garden`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Digital Garden RSS" href="/rss.xml" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <Nav />
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <p>&copy; {new Date().getFullYear()} Digital Garden &middot; <a href="/rss.xml">RSS</a></p>
+      </footer>
+    </div>
+  </body>
+</html>

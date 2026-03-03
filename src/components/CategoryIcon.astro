@@ -1,0 +1,25 @@
+---
+interface Props {
+  category: "created" | "watched" | "read" | "learned";
+}
+
+const { category } = Astro.props;
+
+const icons: Record<string, string> = {
+  created: "\uD83D\uDEE0",
+  watched: "\uD83C\uDFAC",
+  read: "\uD83D\uDCDA",
+  learned: "\uD83D\uDCA1",
+};
+
+const labels: Record<string, string> = {
+  created: "Created",
+  watched: "Watched",
+  read: "Read",
+  learned: "Learned",
+};
+---
+
+<span class="category-badge" data-category={category}>
+  {icons[category]} {labels[category]}
+</span>

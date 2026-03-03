@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import PostCard from "../components/PostCard.astro";
+
+const posts = (await getCollection("posts")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<Base>
+  <div class="page-header">
+    <h1>What's growing</h1>
+    <p style="color: var(--text-muted); margin-top: var(--space-xs);">
+      Daily notes on things I create, watch, read, and learn.
+    </p>
+  </div>
+
+  <div class="category-nav">
+    <a href="/" class="active">All</a>
+    <a href="/category/created">Created</a>
+    <a href="/category/watched">Watched</a>
+    <a href="/category/read">Read</a>
+    <a href="/category/learned">Learned</a>
+  </div>
+
+  {posts.map((post) => (
+    <PostCard
+      title={post.data.title}
+      slug={post.slug}
+      date={post.data.date}
+      category={post.data.category}
+      tags={post.data.tags}
+      description={post.data.description}
+    />
+  ))}
+
+  {posts.length === 0 && (
+    <p style="color: var(--text-muted); padding: var(--space-xl) 0; text-align: center;">
+      No posts yet. Add a markdown file to <code>src/content/posts/</code> to get started.
+    </p>
+  )}
+</Base>
